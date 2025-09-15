@@ -1,7 +1,7 @@
 # P-KNN: Joint Calibration of Pathogenicity Prediction Tools
 **P-KNN** is a command-line tool for genome-wide, non-parametric joint calibration of multiple variant pathogenicity prediction tools. 
 
-![Calibration Concept](https://github.com/Brandes-Lab/P-KNN/raw/main/Calibration_concept.jpg)
+![Calibration Concept](https://github.com/Brandes-Lab/P-KNN/blob/main/Calibration_concept.jpg)
 
 It performs **joint calibration** by leveraging a local K-nearest neighbor (KNN) framework and **bootstrap estimation** to provide conservative estimate of:
 - 2 **Posterior probabilities** of a variant being pathogenic or being benign 
