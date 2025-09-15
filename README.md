@@ -1,11 +1,11 @@
 # P-KNN: Joint Calibration of Pathogenicity Prediction Tools
-**P-KNN** is a command-line tool for genome-wide, non-parametric joint calibration of multiple variant pathogenicity prediction tools. 
+Pathogenicity-K-Nearest-Neighbor (P-KNN) is a command-line tool for genome-wide, non-parametric calibration of multiple variant pathogenicity prediction scores. It transforms raw prediction scores from all tools into interpretable metrics:
+- Posterior probabilities of a variant being pathogenic or benign
+- Log likelihood ratio (LLR) evidence strength, compatible with the ACMG/AMP Bayesian framework for clinical variant interpretation
+
+P-KNN represents each variant as a point in a multidimensional space, with each dimension corresponding to a prediction tool’s score. Using a labeled dataset of pathogenic and benign variants, it applies a local K-nearest neighbor (KNN) framework combined with bootstrap estimation to conservatively estimate pathogenicity based on the proportion of pathogenic neighbors.
 
 ![Calibration Concept](https://github.com/Brandes-Lab/P-KNN/blob/main/Calibration_concept.jpg)
-
-It performs **joint calibration** by leveraging a local K-nearest neighbor (KNN) framework and **bootstrap estimation** to provide conservative estimate of:
-- 2 **Posterior probabilities** of a variant being pathogenic or being benign 
-- **Log likelihood ratio evidence strength**, compatible with the ACMG/AMP Bayesian framework for clinical variant interpretation
 
 ## Requirements
 P-KNN is written in **Python 3** and requires the following packages:
