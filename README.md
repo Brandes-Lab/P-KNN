@@ -72,11 +72,12 @@ python P_KNN.py \
 ### Required arguments
 - **query_csv**: Path to your query variant file with raw scores to be calibrated.
 - **output_dir**: Directory where result CSV and log files will be written.
-### Optional arguments
+### Optional files
 - **calibration_csv**: Calibration data file path (default: calibration_data_dbNSFP52.csv).
 - **regularization_csv**: Regularization data file path (default: regularization_data_dbNSFP52.csv).
+### Optional paremeters
 - **tool_list**: Comma-separated prediction tool names to use for scoring (default: tools from dbNSFPv5.2a whose training data did not overlap with variants in calibration_data_dbNSFP52.csv).
-- **calibration_label**: Column name in calibration file containing binary pathogenic/benign labels.
+- **calibration_label**: Column name in calibration file containing binary pathogenic/benign labels, default is ClinVar_annotation.
 - **p_prior**: Prior probability of pathogenicity (default: 0.0441).
 - **n_calibration_in_window**: Min # of calibration samples per local region (default: 100).
 - **frac_regularization_in_window**: Fraction of regularization data to regularize each region (default: 0.03).
