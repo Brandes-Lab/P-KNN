@@ -160,6 +160,7 @@ def main():
                 logging.error(f"The following tool columns are missing in one or more files: {missing}")
                 sys.exit(1)
             logging.info(f"Using user-specified tool_list: {tool_list}")
+            logging.info(f"Using {len(tool_list)} tools.")
             
         for df, name in zip([calibration_data, regularization_data],
                             ['calibration_data', 'regularization_data']):
