@@ -25,6 +25,8 @@ setup(
             "P_KNN_memory_estimator = P_KNN.P_KNN_memory_estimator:main"
         ]
     },
-    include_package_data=False
-
+    package_data={
+        "P_KNN": ["*.py"]
+    },
+    include_package_data=True
 )
