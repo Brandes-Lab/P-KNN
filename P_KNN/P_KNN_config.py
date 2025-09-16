@@ -29,21 +29,31 @@ def main():
 def update_default_paths(folder, files):
     import re
     import P_KNN
-    pknn_path = P_KNN.__file__
+
+    pkg_dir = os.path.dirname(P_KNN.__file__)
+    pknn_path = os.path.join(pkg_dir, "P_KNN.py")
     print("Config script path:", __file__)
     print("Target P_KNN.py path:", pknn_path)
+    
     with open(pknn_path, "r", encoding="utf-8") as f:
         code = f.read()
+
+    calib_path = os.path.join(folder, "dataset4commandline", files[0])
+    reg_path = os.path.join(folder, "dataset4commandline", files[1])
+
     code = re.sub(
-        r"parser\.add_argument\('--calibration_csv', default='[^']*'",
-        f"parser.add_argument('--calibration_csv', default=r'{os.path.join(folder, "dataset4commandline", files[0])}'",
-        code
+        r"parser\.add_argument\(\s*['\"]--calibration_csv['\"].*?default\s*=\s*['\"][^'\"]*['\"]",
+        f"parser.add_argument('--calibration_csv', default=r'{calib_path}'",
+        code,
+        flags=re.DOTALL
     )
     code = re.sub(
-        r"parser\.add_argument\('--regularization_csv', default='[^']*'",
-        f"parser.add_argument('--regularization_csv', default=r'{os.path.join(folder, "dataset4commandline", files[1])}'",
-        code
+        r"parser\.add_argument\(\s*['\"]--regularization_csv['\"].*?default\s*=\s*['\"][^'\"]*['\"]",
+        f"parser.add_argument('--regularization_csv', default=r'{reg_path}'",
+        code,
+        flags=re.DOTALL
     )
+
     with open(pknn_path, "w", encoding="utf-8") as f:
         f.write(code)
     print("Default paths in P_KNN.py updated.")
