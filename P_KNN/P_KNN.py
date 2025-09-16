@@ -39,20 +39,15 @@ def main():
     parser.add_argument('--output_dir', required=True,
                         help='Directory where the output CSV and log files will be saved.')
 
-    parser.add_argument('--calibration_csv', default='calibration_data_dbNSFP52.csv',
-                        help='Path to the calibration data CSV file. Default: calibration_data_dbNSFP52.csv')
-    parser.add_argument('--regularization_csv', default='regularization_data_dbNSFP52.csv',
-                        help='Path to the regularization data CSV file. Default: regularization_data_dbNSFP52.csv')
+    parser.add_argument('--calibration_csv', 
+                        default=os.path.join(os.path.dirname(__file__), 'calibration_data_dbNSFP52.csv'),
+                        help='Path to the calibration data CSV file. Default: path to calibration_data_dbNSFP52.csv')
+    parser.add_argument('--regularization_csv', 
+                        default=os.path.join(os.path.dirname(__file__), 'regularization_data_dbNSFP52.csv'),
+                        help='Path to the regularization data CSV file. Default: path toregularization_data_dbNSFP52.csv')
 
-    parser.add_argument('--tool_list', type=str, default=(
-                        "SIFT_score,SIFT4G_score,Polyphen2_HDIV_score,Polyphen2_HVAR_score,"
-                        "MutationAssessor_score,PROVEAN_score,VEST4_score,REVEL_score,MutPred2_score,"
-                        "MPC_score,PrimateAI_score,BayesDel_noAF_score,LIST-S2_score,ESM1b_score,"
-                        "AlphaMissense_score,CADD_phred,DANN_score,Eigen-PC-raw_coding,GERP++_RS,"
-                        "GERP_91_mammals,phyloP100way_vertebrate,phyloP470way_mammalian,"
-                        "phyloP17way_primate,phastCons100way_vertebrate,phastCons470way_mammalian,"
-                        "phastCons17way_primate,bStatistic"),
-                        help='Comma-separated list of tool columns to use for calibration.')
+    parser.add_argument('--tool_list', type=str, default="auto",
+                        help='Comma-separated list of tool columns to use for calibration (e.g., SIFT_score,FATHMM_score,VEST4_score). Default: auto (auto-detect *_score columns present in all input csv files).')
     parser.add_argument('--calibration_label', type=str, default='ClinVar_annotation',
                         help='Column name in calibration CSV that contains binary labels (e.g., ClinVar_annotation).')
 
@@ -74,18 +69,30 @@ def main():
     parser.add_argument('--bootstrap_alpha_error', type=float, default=0.05,
                         help='One-tailed alpha value (1 - confidence) used in bootstrap-derived credible intervals. Default: 0.05')
 
-    parser.add_argument('--device', default='GPU', choices=['GPU', 'CPU'],
-                        help='Which device to use for computation. Choose "GPU" or "CPU". Default: GPU')
+    parser.add_argument('--device', default='auto', choices=['GPU', 'CPU', 'auto'],
+                        help='Which device to use for computation. Choose GPU, CPU, or auto. Default: auto (auto-detect GPU if available)')
     parser.add_argument('--batch_size', type=int, default=512,
                         help='Batch size for GPU processing. Ignored if device=CPU. Default: 512 (suitable for VRAM 16GB)')
     parser.add_argument('--cpu_parallel', type=str2bool, default=True,
-                        help='Whether to run CPU computations in parallel. Accepts True or False. Default: True')
+                        help='Whether to run CPU computations in parallel. Accepts True or False. Ignored if device=GPU. Default: True')
 
     parser.add_argument('--query_chunk_size', type=int, default=None,
                         help='Optional: split query into chunks of this size to reduce memory usage (e.g., 2560000 for 10GB memory in GPU mode).')
 
     args = parser.parse_args()
 
+    # Auto-detect device if needed
+    if args.device == 'auto':
+        try:
+            import torch
+            if torch.cuda.is_available():
+                args.device = 'GPU'
+            else:
+                args.device = 'CPU'
+        except ImportError:
+            args.device = 'CPU'
+
+    # Setup output directory and logging
     os.makedirs(args.output_dir, exist_ok=True)
     query_name = os.path.splitext(os.path.basename(args.query_csv))[0]
     output_csv = os.path.join(args.output_dir, f"P_KNN_{query_name}.csv")
@@ -105,12 +112,8 @@ def main():
         logging.info(f"Output CSV: {output_csv}")
         logging.info(f"Calibration CSV: {args.calibration_csv}")
         logging.info(f"Regularization CSV: {args.regularization_csv}")
-
-        tool_list = args.tool_list.split(',')
-        logging.info(f"Using {len(tool_list)} tools")
-
+        
         # Load calibration and regularization once
-
         if not os.path.exists(args.query_csv):
             logging.error(f"Query CSV file '{args.query_csv}' does not exist.")
             sys.exit(1)
@@ -127,14 +130,40 @@ def main():
             logging.error(f"Output directory '{args.output_dir}' is not writable.")
             sys.exit(1)
 
+        # Automatic detecting calibration_label and tool_list
         calibration_data = pd.read_csv(args.calibration_csv, low_memory=False)
         regularization_data = pd.read_csv(args.regularization_csv, low_memory=False)
+        query_data_head = pd.read_csv(args.query_csv, low_memory=False, nrows=1)
 
-        assert args.calibration_label in calibration_data.columns, f"Calibration label '{args.calibration_label}' not found in calibration data." 
+        if args.calibration_label not in calibration_data.columns:
+            logging.error(f"Calibration label '{args.calibration_label}' not found in calibration data.")
+            sys.exit(1)
 
+        if args.tool_list.strip().lower() == "auto":
+            # end with _score and exist in all three files
+            query_score_cols = [col for col in query_data_head.columns if col.endswith('_score')]
+            calibration_cols = set(calibration_data.columns)
+            regularization_cols = set(regularization_data.columns)
+            auto_tool_list = [col for col in query_score_cols if col in calibration_cols and col in regularization_cols]
+            if not auto_tool_list:
+                logging.error("No matching *_score columns found in all three files.")
+                sys.exit(1)
+            tool_list = auto_tool_list
+            logging.info(f"Auto-detected tool_list: {tool_list}")
+        else:
+            tool_list = args.tool_list.split(',')
+            # check if all files have these columns
+            missing = []
+            for col in tool_list:
+                if col not in query_data_head.columns or col not in calibration_data.columns or col not in regularization_data.columns:
+                    missing.append(col)
+            if missing:
+                logging.error(f"The following tool columns are missing in one or more files: {missing}")
+                sys.exit(1)
+            logging.info(f"Using user-specified tool_list: {tool_list}")
+            
         for df, name in zip([calibration_data, regularization_data],
                             ['calibration_data', 'regularization_data']):
-            assert all(tool in df.columns for tool in tool_list), f"Some tools missing in {name} file"
             df[tool_list] = df[tool_list].apply(lambda col: pd.to_numeric(col, errors='coerce'))
             missing_ratio = df.isna().sum()[tool_list] / len(df)
             logging.info(f'Missing ratio in {name}:\n{missing_ratio}')
@@ -210,7 +239,10 @@ def main():
         sys.exit(0)
 
     except Exception as e:
-        chunk_info = f"chunk {i+1}/{total_chunks}" if 'i' in locals() and 'total_chunks' in locals() else "initialization"
+        if 'chunk_size' in locals() and chunk_size:
+            chunk_info = f"chunk {i+1}/{total_chunks}" if 'i' in locals() and 'total_chunks' in locals() else "initialization"
+        else:
+            chunk_info = "full query"
         logging.error(f"Error occurred during {chunk_info}")
         logging.error(traceback.format_exc())
         sys.exit(1)
