@@ -21,9 +21,10 @@ setup(
     entry_points={
         "console_scripts": [
             "P_KNN = P_KNN.P_KNN:main",
-            "P_KNN_config = P_KNN.P_KNN_config:main"
+            "P_KNN_config = P_KNN.P_KNN_config:main",
             "P_KNN_memory_estimator = P_KNN.P_KNN_memory_estimator:main"
         ]
     },
     include_package_data=False
+
 )
