@@ -39,11 +39,9 @@ def main():
     parser.add_argument('--output_dir', required=True,
                         help='Directory where the output CSV and log files will be saved.')
 
-    parser.add_argument('--calibration_csv', 
-                        default=os.path.join(os.path.dirname(__file__), 'calibration_data_dbNSFP52.csv'),
+    parser.add_argument('--calibration_csv', default=os.path.join(os.path.dirname(__file__), 'calibration_data_dbNSFP52.csv'),
                         help='Path to the calibration data CSV file. Default: path to calibration_data_dbNSFP52.csv')
-    parser.add_argument('--regularization_csv', 
-                        default=os.path.join(os.path.dirname(__file__), 'regularization_data_dbNSFP52.csv'),
+    parser.add_argument('--regularization_csv', default=os.path.join(os.path.dirname(__file__), 'regularization_data_dbNSFP52.csv'),
                         help='Path to the regularization data CSV file. Default: path toregularization_data_dbNSFP52.csv')
 
     parser.add_argument('--tool_list', type=str, default="auto",
@@ -206,7 +204,10 @@ def main():
 
             # ===== Dynamic Import Based on Device =====
             if args.device == 'GPU':
-                from P_KNN_GPU import get_bootstrap_KNN_score_gpu, get_P_KNN_ACMG_score
+                try:
+                    from .P_KNN_GPU import get_bootstrap_KNN_score_gpu, get_P_KNN_ACMG_score
+                except ImportError:
+                    from P_KNN_GPU import get_bootstrap_KNN_score_gpu, get_P_KNN_ACMG_score
                 test_results_array = get_bootstrap_KNN_score_gpu(
                     calibration_feature, query_feature, regularization_feature,
                     calibration_label, args.p_prior, None,
@@ -215,7 +216,10 @@ def main():
                     args.n_bootstrap, args.batch_size
                     )
             else:
-                from P_KNN_CPU import get_bootstrap_KNN_score, get_P_KNN_ACMG_score
+                try:
+                    from .P_KNN_CPU import get_bootstrap_KNN_score, get_P_KNN_ACMG_score
+                except ImportError:
+                    from P_KNN_CPU import get_bootstrap_KNN_score, get_P_KNN_ACMG_score
                 test_results_array = get_bootstrap_KNN_score(
                     calibration_feature, query_feature, regularization_feature,
                     calibration_label, args.p_prior, None,
