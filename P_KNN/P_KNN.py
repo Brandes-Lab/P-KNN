@@ -148,6 +148,7 @@ def main():
                 sys.exit(1)
             tool_list = auto_tool_list
             logging.info(f"Auto-detected tool_list: {tool_list}")
+            logging.info(f"Using {len(tool_list)} tools.")
         else:
             tool_list = args.tool_list.split(',')
             # check if all files have these columns
