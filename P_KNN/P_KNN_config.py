@@ -8,6 +8,7 @@ def main():
         return
 
     folder = input("Enter folder to save datasets: ").strip()
+    folder = os.path.abspath(folder)
     os.makedirs(folder, exist_ok=True)
 
     files = ["calibration_data_dbNSFP52.csv", "regularization_data_dbNSFP52.csv"]
@@ -22,22 +23,25 @@ def main():
         )
     print("Download complete.")
 
-    # 修改 P_KNN.py 預設路徑
+    # update P_KNN.py default paths
     update_default_paths(folder, files)
 
 def update_default_paths(folder, files):
     import re
-    pknn_path = os.path.join(os.path.dirname(__file__), "P_KNN.py")
+    import P_KNN
+    pknn_path = P_KNN.__file__
+    print("Config script path:", __file__)
+    print("Target P_KNN.py path:", pknn_path)
     with open(pknn_path, "r", encoding="utf-8") as f:
         code = f.read()
     code = re.sub(
         r"parser\.add_argument\('--calibration_csv', default='[^']*'",
-        f"parser.add_argument('--calibration_csv', default=r'{os.path.join(folder, files[0])}'",
+        f"parser.add_argument('--calibration_csv', default=r'{os.path.join(folder, "dataset4commandline", files[0])}'",
         code
     )
     code = re.sub(
         r"parser\.add_argument\('--regularization_csv', default='[^']*'",
-        f"parser.add_argument('--regularization_csv', default=r'{os.path.join(folder, files[1])}'",
+        f"parser.add_argument('--regularization_csv', default=r'{os.path.join(folder, "dataset4commandline", files[1])}'",
         code
     )
     with open(pknn_path, "w", encoding="utf-8") as f:
