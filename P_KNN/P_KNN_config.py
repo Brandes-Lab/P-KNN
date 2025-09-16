@@ -26,6 +26,18 @@ def main():
             repo_type="dataset",
             local_dir=folder
         )
+
+    test_ans=input("Do you want to download a test file (about 60 KB)? (yes/no): ")
+    if test_ans in ("yes", "y"):
+        test_file = "Test.csv"
+        print(f"Downloading {test_file} ...")
+        hf_hub_download(
+            repo_id="brandeslab/P-KNN",
+            filename=f"dataset4commandline/{test_file}",
+            repo_type="dataset",
+            local_dir=folder
+        )
+
     print("Download complete.")
 
     # update P_KNN.py default paths
