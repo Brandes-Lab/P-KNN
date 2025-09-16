@@ -99,7 +99,7 @@ def estimate_memory(n_tools, n_query, n_calibration, n_regularization, n_bootstr
         if per_batch_peak > vram_bytes:
             print(f"[Warning] Estimated batch exceeds {vram_gb:.1f} GiB limit")
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Estimate memory usage for P-KNN run.")
     parser.add_argument('--n_tools', type=int, required=True,
                         help='Number of tools (features) in the dataset')
@@ -134,3 +134,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     estimate_memory(**vars(args))
+
+if __name__ == "__main__":
+    main()
