@@ -118,12 +118,12 @@ P_KNN \
 ```
 
 ### Required Arguments
---**query_csv**: Path to your query variant CSV file containing raw scores to be calibrated.
---**output_dir**: Directory where the result CSV and log files will be saved.
+- **query_csv**: Path to your query variant CSV file containing raw scores to be calibrated.
+- **output_dir**: Directory where the result CSV and log files will be saved.
 
 ### Optional Files
---**calibration_csv**: Path to the calibration data CSV file. If you used the configuration script, the default path will be set automatically.
---**regularization_csv**: Path to the regularization data CSV file. The default path will be set during configuration.
+- **calibration_csv**: Path to the calibration data CSV file. If you used the configuration script, the default path will be set automatically.
+- **regularization_csv**: Path to the regularization data CSV file. The default path will be set during configuration.
 
 ### Optional paremeters
 - **tool_list**: Comma-separated list of prediction tool columns to use for calibration (e.g., SIFT_score,FATHMM_score,VEST4_score). Default: auto (automatically detects *_score columns present in all input files).
@@ -131,17 +131,17 @@ P_KNN \
 - **p_prior**: Prior probability of a variant being pathogenic (default: 0.0441 according to [ClinGen](https://linkinghub.elsevier.com/retrieve/pii/S0002-9297(22)00461-X)).
 - **n_calibration_in_window**: Minimum number of calibration variants per local window (default: 100).
 - **frac_regularization_in_window**: Minimum fraction of regularization samples per window (default: 0.03).
---**normalization**: Score normalization method ("rank" or "z", default: rank).
---**impute**: Whether to impute missing values with KNN imputation (default: True).
---**mi_scaling**: Whether to apply mutual information-based scaling (default: True).
---**n_bootstrap**: Number of bootstrap iterations for uncertainty estimation (default: 100).
---**bootstrap_alpha_error**: One-tailed alpha value for credible intervals (e.g. 0.05 for 95% CI, default: 0.05).
+- **normalization**: Score normalization method ("rank" or "z", default: rank).
+- **impute**: Whether to impute missing values with KNN imputation (default: True).
+- **mi_scaling**: Whether to apply mutual information-based scaling (default: True).
+- **n_bootstrap**: Number of bootstrap iterations for uncertainty estimation (default: 100).
+- **bootstrap_alpha_error**: One-tailed alpha value for credible intervals (e.g. 0.05 for 95% CI, default: 0.05).
 
 ### Execution settings
---**device**: Computation device ("GPU", "CPU", or "auto", default: auto, which auto-detect GPU if available).
---**batch_size**: Batch size for GPU processing (default: 512).
---**cpu_parallel**: Whether to run CPU computations in parallel (default: True).
---**query_chunk_size**: Split query into chunks to reduce memory usage (optional, default: None).
+- **device**: Computation device ("GPU", "CPU", or "auto", default: auto, which auto-detect GPU if available).
+- **batch_size**: Batch size for GPU processing (default: 512).
+- **cpu_parallel**: Whether to run CPU computations in parallel (default: True).
+- **query_chunk_size**: Split query into chunks to reduce memory usage (optional, default: None).
 
 ## Estimate memory requirment
 You can estimate the memory requirment of P-KNN from the command line using:
