@@ -45,19 +45,39 @@ pip install .[all]  # Choose 'cpu' or 'gpu' to install the specific version, or 
 - **all**: Installs both CPU and GPU versions for full compatibility.
 Tip: If you're unsure which version to install, use all to ensure full compatibility.
 
-*Alternatively, you can manually install the required packages using pip or conda before installing P-KNN. You may also run the scripts directly by downloading [P_KNN.py](https://github.com/Brandes-Lab/P-KNN/blob/main/P_KNN/P_KNN.py), [P_KNN_CPU.py](https://github.com/Brandes-Lab/P-KNN/blob/main/P_KNN/P_KNN_CPU.py), [P_KNN_GPU.py](https://github.com/Brandes-Lab/P-KNN/blob/main/P_KNN/P_KNN_GPU.py), and [P_KNN_memory_estimator.py](https://github.com/Brandes-Lab/P-KNN/blob/main/P_KNN/P_KNN_memory_estimator.py) in [P_KNN](https://github.com/Brandes-Lab/P-KNN/tree/main/P_KNN) subfolders, configure them manually and executing them as standalone Python scripts.*
+*Alternatively, you can manually install the required packages using pip or conda before installing P-KNN. You may also run the scripts directly by downloading P_KNN.py, P_KNN_CPU.py, P_KNN_GPU.py, and P_KNN_memory_estimator.py in [P_KNN](https://github.com/Brandes-Lab/P-KNN/tree/main/P_KNN) subfolders, configure them manually and executing them as standalone Python scripts.*
 
 ## Configure P-KNN
 After installing P-KNN, you can configure the default dataset paths by running:
 ```bash
 P_KNN_config
 ```
-This script will Prompt you to download the default calibration and regularization datasets (about 200 MB) from [HuggingFace](https://huggingface.co/datasets/brandeslab/P-KNN/tree/main/dataset4commandline). It will:
-- Let you choose the dataset version: academic [calibration_data_dbNSFP52.csv](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/calibration_data_dbNSFP52.csv), [regularization_data_dbNSFP52.csv](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/regularization_data_dbNSFP52.csv) or commercial [calibration_data_dbNSFP52c.csv](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/calibration_data_dbNSFP52c.csv), [regularization_data_dbNSFP52c.csv](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/regularization_data_dbNSFP52c.csv).
-**Note: The commercial version requires a dbNSFP license.**
-- Ask for a folder to save the datasets and automatically update the default dataset paths in P_KNN.py for future runs.
-- Optionally download a [test file](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/Test.csv) (about 60 KB).
-If you choose not to download the default datasets, you can specify your own dataset paths when running P-KNN.
+This script will guide you through download the default dataset from [HuggingFace](https://huggingface.co/datasets/brandeslab/P-KNN/tree/main/dataset4commandline). Here's what it does:
+
+### Dataset Options
+You’ll be prompted to choose between academic and commercial versions of the calibration and regularization datasets (~200 MB total):
+- Academic:
+ - calibration_data_dbNSFP52.csv
+ - regularization_data_dbNSFP52.csv
+- Commercial:
+-  - calibration_data_dbNSFP52c.csv
+   - regularization_data_dbNSFP52c.csv
+
+You will also be prompted to download a optional small test file (~60 KB) for validating the installation.
+
+### Path Configuration
+The script will ask you to specify a folder to save the datasets. Once selected, it automatically updates the default dataset paths used by P-KNN for future runs.
+
+If you prefer to use your own calibration and regularization datasets, you can manually specify their paths when running P-KNN (see run P_KNN below).
+
+*If you prefer running P_KNN.py as a python script and would like to use the default dataset, please download manually and you can modify the default paths in the argument parser:*
+```Python
+parser.add_argument('--calibration_csv', default=os.path.join(os.path.dirname(__file__), 'calibration_data_dbNSFP52.csv'),
+                    help='Path to the calibration data CSV file. Default: calibration_data_dbNSFP52.csv')
+
+parser.add_argument('--regularization_csv', default=os.path.join(os.path.dirname(__file__), 'regularization_data_dbNSFP52.csv'),
+                    help='Path to the regularization data CSV file. Default: regularization_data_dbNSFP52.csv')
+```
 
 ## run P-KNN
 You can run the P-KNN joint calibration from the command line using:
