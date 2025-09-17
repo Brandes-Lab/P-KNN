@@ -1,14 +1,14 @@
 # P-KNN: Joint Calibration of Pathogenicity Prediction Tools
-**Pathogenicity-K-Nearest-Neighbor (P-KNN)** is a command-line tool for genome-wide, non-parametric calibration of multiple variant pathogenicity prediction scores. It transforms raw prediction scores from all tools into clinical interpretable metrics:
-- Posterior probabilities of a variant being pathogenic or benign
-- Log likelihood ratio (LLR) evidence strength, compatible with the [ACMG/AMP Bayesian framework](https://www.sciencedirect.com/science/article/pii/S1098360021017718?via%3Dihub) for clinical variant interpretation
+**Pathogenicity-K-Nearest-Neighbor (P-KNN)** is a command-line tool for genome-wide, non-parametric calibration of multiple variant pathogenicity prediction scores. It transforms raw scores from various prediction tools into clinically interpretable metrics:
+- Posterior probabilities of a variant being pathogenic or benign.
+- Log likelihood ratio (LLR) evidence strength, compatible with the [ACMG/AMP Bayesian framework](https://www.sciencedirect.com/science/article/pii/S1098360021017718?via%3Dihub) for clinical variant interpretation.
 
-**P-KNN** represents each variant as a point in a multidimensional space, with each dimension corresponding to a prediction tool’s score. Using a labeled dataset of pathogenic and benign variants, it applies a local K-nearest neighbor (KNN) framework combined with bootstrap estimation to conservatively estimate pathogenicity based on the proportion of pathogenic neighbors.
+**P-KNN** represents each variant as a point in a multidimensional space, where each dimension corresponds to a prediction tool’s score. Using a labeled dataset of pathogenic and benign variants, it applies a local K-nearest neighbor (KNN) framework combined with bootstrap estimation to conservatively estimate pathogenicity based on the proportion of pathogenic neighbors.
 
 ![Calibration Concept](https://github.com/Brandes-Lab/P-KNN/blob/main/Calibration_concept.jpg)
 
 ## Requirements
-P-KNN is written in **Python 3** and requires the following packages:
+P-KNN is written in **Python 3** and depends on the following packages:
 | Package        | Purpose                                                  |
 |----------------|----------------------------------------------------------|
 | `numpy`        | Numerical operations                                     |
@@ -17,6 +17,7 @@ P-KNN is written in **Python 3** and requires the following packages:
 | `tqdm`         | Progress bar for bootstraping                            |
 | `joblib`       | (CPU mode only) Parallel computation support             |
 | `torch`        | (GPU mode only) Required for CUDA acceleration           |
+
 ### Tested Versions
 The following versions were used during development and testing:
 ```{text}
@@ -43,41 +44,24 @@ pip install .[all]  # Choose 'cpu' or 'gpu' to install the specific version, or 
 - **gpu**: Installs the GPU-enabled version.
 - **all**: Installs both CPU and GPU versions
 Tip: If you're unsure which version to install, use all to ensure full compatibility.
+*You can aslo install the requirement with pip or conda before installing P_KNN, or even manually install the requirement and download all P_KNN subfolder and run them as python script*
 
-
-
-
-### pip
+## Configure P-KNN
+After installing P-KNN, you can configure the default dataset paths by running:
 ```bash
-pip install numpy pandas scikit-learn tqdm
+P_KNN_config
 ```
-To support CPU parallelization, add:
-```bash
-pip install joblib
-```
-To support GPU acceleration, add:
-```bash
-pip install torch
-```
-
-### conda
-```bash
-conda create -n pknn python numpy pandas scikit-learn tqdm
-conda activate pknn
-```
-To support CPU parallelization, add:
-```bash
-conda install joblib
-```
-To support GPU acceleration, add:
-```bash
-pip install torch
-```
+This script will Prompt you to download the default calibration and regularization datasets (about 200 MB) from [HuggingFace](https://huggingface.co/datasets/brandeslab/P-KNN/tree/main/dataset4commandline). It will:
+- Let you choose the dataset version: academic [calibration_data_dbNSFP52.csv](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/calibration_data_dbNSFP52.csv), [regularization_data_dbNSFP52.csv](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/regularization_data_dbNSFP52.csv) or commercial [calibration_data_dbNSFP52c.csv](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/calibration_data_dbNSFP52c.csv), [regularization_data_dbNSFP52c.csv](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/regularization_data_dbNSFP52c.csv).
+**Note: The commercial version requires a dbNSFP license.**
+- Ask for a folder to save the datasets and automatically update the default dataset paths in P_KNN.py for future runs.
+- Optionally download a [test file](https://huggingface.co/datasets/brandeslab/P-KNN/blob/main/dataset4commandline/Test.csv) (about 60 KB).
+If you choose not to download the default datasets, you can specify your own dataset paths when running P-KNN.
 
 ## run P-KNN
 You can run the P-KNN joint calibration from the command line using:
 ```
-python P_KNN.py \
+P_KNN \
   --query_csv path/to/query.csv \
   --output_dir path/to/output_folder \
   --calibration_csv path/to/calibration_data.csv \
@@ -101,10 +85,12 @@ python P_KNN.py \
 - **query_csv**: Path to your query variant file with raw scores to be calibrated.
 - **output_dir**: Directory where result CSV and log files will be written.
 ### Optional files
-- **calibration_csv**: Calibration data file path (default: calibration_data_dbNSFP52.csv).
-- **regularization_csv**: Regularization data file path (default: regularization_data_dbNSFP52.csv).
+- **calibration_csv**: Calibration data file path (The path for default dataset will be set during configuration).
+- **regularization_csv**: Regularization data file path (The path for default dataset will be set during configuration).
 ### Optional paremeters
-- **tool_list**: Comma-separated prediction tool names to use for scoring (default: tools from dbNSFPv5.2a whose training data did not overlap with variants in calibration_data_dbNSFP52.csv).
+- **tool_list**: Comma-separated prediction tool names to use for scoring (default: auto
+-
+- tools from dbNSFPv5.2a whose training data did not overlap with variants in calibration_data_dbNSFP52.csv).
 - **calibration_label**: Column name in calibration file containing binary pathogenic/benign labels, default is ClinVar_annotation.
 - **p_prior**: Prior probability of pathogenicity (default: 0.0441).
 - **n_calibration_in_window**: Min # of calibration samples per local region (default: 100).
