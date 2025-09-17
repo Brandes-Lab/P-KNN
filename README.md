@@ -7,8 +7,32 @@
 
 ![Calibration Concept](https://github.com/Brandes-Lab/P-KNN/blob/main/Calibration_concept.jpg)
 
+## Requirements
+P-KNN is written in **Python 3** and requires the following packages:
+| Package        | Purpose                                                  |
+|----------------|----------------------------------------------------------|
+| `numpy`        | Numerical operations                                     |
+| `pandas`       | Reading and manipulating tabular csv data                |
+| `scikit-learn` | Impute missing value, mutual information scaling, etc.   |
+| `tqdm`         | Progress bar for bootstraping                            |
+| `joblib`       | (CPU mode only) Parallel computation support             |
+| `torch`        | (GPU mode only) Required for CUDA acceleration           |
+### Tested Versions
+The following versions were used during development and testing:
+```{text}
+python==3.13.7
+numpy==2.3.3
+pandas==2.3.2
+scikit-learn==1.7.2
+torch==2.8.0
+tqdm==4.67.1
+huggingface_hub==0.34.6
+joblib==1.5.2
+```
+Note: Compatibility with other versions may vary. If you encounter issues, try matching these versions in a virtual environment.
 
 ## Installation
+The easiest way to install P-KNN is via pip after cloning the repository. This will set up the environment and install all necessary dependencies.
 ```bash
 git clone https://github.com/Brandes-Lab/P-KNN.git
 cd P-KNN
@@ -18,20 +42,10 @@ pip install .[all]  # Choose 'cpu' or 'gpu' to install the specific version, or 
 - **cpu**: Installs the CPU-multiprocessing version of the package.
 - **gpu**: Installs the GPU-enabled version.
 - **all**: Installs both CPU and GPU versions
+Tip: If you're unsure which version to install, use all to ensure full compatibility.
 
-## Requirements
-P-KNN is written in **Python 3** and requires the following packages:
 
-| Package        | Purpose                                                  |
-|----------------|----------------------------------------------------------|
-| `numpy`        | Numerical operations                                     |
-| `pandas`       | Reading and manipulating tabular csv data                |
-| `scikit-learn` | Impute missing value, mutual information scaling, etc.   |
-| `tqdm`         | Progress bar for bootstraping                            |
-| `joblib`       | (Only for CPU mode) parallel computation support         |
-| `torch`        | (Only for GPU mode) required for CUDA acceleration       |
 
-You can install all core packages via pip or conda:
 
 ### pip
 ```bash
