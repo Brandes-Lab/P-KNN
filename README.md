@@ -69,8 +69,6 @@ You will also be prompted to download a optional small test file (~60 KB) for va
 ### Path Configuration
 The script will ask you to specify a folder to save the datasets. Once selected, it automatically updates the default dataset paths used by P-KNN for future runs.
 
-*If you prefer to use your own calibration and regularization datasets, you can skip configuration and manually specify their paths when running P-KNN (see Run P_KNN below).*
-
 *If you prefer running P_KNN.py as a python script and would like to use the default dataset, please download manually and you can modify the default paths in the argument parser:*
 ```Python
 parser.add_argument('--calibration_csv', default='/put the path to default calibration dataset here/',
@@ -79,6 +77,21 @@ parser.add_argument('--calibration_csv', default='/put the path to default calib
 parser.add_argument('--regularization_csv', default='/put the path to default regularization dataset here/',
                     help='Path to the regularization data CSV file. Default: regularization_data_dbNSFP52.csv')
 ```
+*If you prefer to use your own calibration and regularization datasets, you can skip configuration and manually specify their paths when running P-KNN (see Run P_KNN below).*
+
+### Preparing datasets
+When preparing your query dataset or custom calibration and regularization datasets, each row should represent a single variant. The columns can include:
+- **Variant identifiers** such as chromosome, position, reference and alternate alleles, or other unique identifiers
+- **Prediction scores** from various tools: it's recommended to use column names ending with _score so that P-KNN can automatically detect and include them.
+- **pathogenicity label**: For calibration datasets, a pathogenicity label is required. If the column is named ClinVar_annotation, P-KNN will automatically recognize it as the label column.
+
+Here’s a conceptual example of the dataset format:
+| chromosome | position | ... | prediction_tool_1_score | prediction_tool_2_score | ... | ClinVar_annotation |
+|------------|----------|-----|------------------------|------------------------|-----|-------------------|
+| 1          | 955677   | ... | 0.77                   | 2.14                   | ... | 0                 |
+| 1          | 977396   | ... | 0.25                   | 1.80                   | ... | 0                 |
+| 1          | 978801   | ... | 0.04                   | 1.02                   | ... | 1                 |
+
 
 ## Run P-KNN
 You can run the P-KNN joint calibration from the command line using:
