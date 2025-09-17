@@ -5,6 +5,10 @@
 
 **P-KNN** represents each variant as a point in a multidimensional space, where each dimension corresponds to a prediction tool’s score. Using a labeled dataset of pathogenic and benign variants, it applies a local K-nearest neighbor (KNN) framework combined with bootstrap estimation to conservatively estimate pathogenicity based on the proportion of pathogenic neighbors.
 
+P-KNN requires two key datasets:
+- **Calibration dataset**: A labeled set of pathogenic and benign variants used to estimate posterior probabilities.
+- **Regularization dataset**: An unlabeled set of variants that reflects the general distribution of variants across the human genome. This dataset is used to regularize the minimum search radius for K-nearest neighbors, preventing overly narrow local neighborhoods and improving generalizability.
+
 ![Calibration Concept](https://github.com/Brandes-Lab/P-KNN/blob/main/Calibration_concept.jpg)
 
 ## Requirements
@@ -60,8 +64,8 @@ You’ll be prompted to choose between academic and commercial versions of the c
  - calibration_data_dbNSFP52.csv
  - regularization_data_dbNSFP52.csv
 - Commercial:
--  - calibration_data_dbNSFP52c.csv
-   - regularization_data_dbNSFP52c.csv
+ - calibration_data_dbNSFP52c.csv
+ - regularization_data_dbNSFP52c.csv
 
 You will also be prompted to download a optional small test file (~60 KB) for validating the installation.
 
