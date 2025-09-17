@@ -12,14 +12,14 @@ P-KNN is written in **Python 3** and depends on the following packages:
 | Package        | Purpose                                                  |
 |----------------|----------------------------------------------------------|
 | `numpy`        | Numerical operations                                     |
-| `pandas`       | Reading and manipulating tabular csv data                |
-| `scikit-learn` | Impute missing value, mutual information scaling, etc.   |
+| `pandas`       | Reading and manipulating tabular CSV data                |
+| `scikit-learn` | Imputation, mutual information scaling, etc.             |
 | `tqdm`         | Progress bar for bootstraping                            |
 | `joblib`       | (CPU mode only) Parallel computation support             |
-| `torch`        | (GPU mode only) Required for CUDA acceleration           |
+| `torch`        | (GPU mode only) CUDA acceleration                        |
 
 ### Tested Versions
-The following versions were used during development and testing:
+P-KNN was developed and tested with the following package versions:
 ```{text}
 python==3.13.7
 numpy==2.3.3
@@ -30,21 +30,22 @@ tqdm==4.67.1
 huggingface_hub==0.34.6
 joblib==1.5.2
 ```
-Note: Compatibility with other versions may vary. If you encounter issues, try matching these versions in a virtual environment.
+Note: Compatibility with other versions may vary. If you encounter issues, we recommend matching these versions in a virtual environment.
 
 ## Installation
-The easiest way to install P-KNN is via pip after cloning the repository. This will set up the environment and install all necessary dependencies.
+To install P-KNN, clone the repository and use pip to install dependencies:
 ```bash
 git clone https://github.com/Brandes-Lab/P-KNN.git
 cd P-KNN
 pip install .[all]  # Choose 'cpu' or 'gpu' to install the specific version, or 'all' to install both CPU and GPU versions.
 ```
-### options
-- **cpu**: Installs the CPU-multiprocessing version of the package.
-- **gpu**: Installs the GPU-enabled version.
-- **all**: Installs both CPU and GPU versions
+### Installation Options
+- **cpu**: Installs the CPU-only version with multiprocessing support.
+- **gpu**: Installs the GPU-enabled version with CUDA acceleration.
+- **all**: Installs both CPU and GPU versions for full compatibility.
 Tip: If you're unsure which version to install, use all to ensure full compatibility.
-*You can aslo install the requirement with pip or conda before installing P_KNN, or even manually install the requirement and download all P_KNN subfolder and run them as python script*
+
+*Alternatively, you can manually install the required packages using pip or conda before installing P-KNN. You may also run the scripts directly by downloading [P_KNN.py](https://github.com/Brandes-Lab/P-KNN/blob/main/P_KNN/P_KNN.py), [P_KNN_CPU.py](https://github.com/Brandes-Lab/P-KNN/blob/main/P_KNN/P_KNN_CPU.py), [P_KNN_GPU.py](https://github.com/Brandes-Lab/P-KNN/blob/main/P_KNN/P_KNN_GPU.py), and [P_KNN_memory_estimator.py](https://github.com/Brandes-Lab/P-KNN/blob/main/P_KNN/P_KNN_memory_estimator.py) in [P_KNN](https://github.com/Brandes-Lab/P-KNN/tree/main/P_KNN) subfolders, configure them manually and executing them as standalone Python scripts.*
 
 ## Configure P-KNN
 After installing P-KNN, you can configure the default dataset paths by running:
