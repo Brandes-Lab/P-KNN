@@ -60,26 +60,23 @@ This script will guide you through download the default dataset from [HuggingFac
 
 ### Dataset Options
 You’ll be prompted to choose between academic and commercial versions of the calibration and regularization datasets (~200 MB total):
-- Academic:
- - calibration_data_dbNSFP52.csv
- - regularization_data_dbNSFP52.csv
-- Commercial:
- - calibration_data_dbNSFP52c.csv
- - regularization_data_dbNSFP52c.csv
+- Academic: calibration_data_dbNSFP52.csv, regularization_data_dbNSFP52.csv
+- Commercial: calibration_data_dbNSFP52c.csv, regularization_data_dbNSFP52c.csv
+**Note: For commercial use, please choose commercial version and optain a [dbNSFP license](https://www.dbnsfp.org/license).**
 
 You will also be prompted to download a optional small test file (~60 KB) for validating the installation.
 
 ### Path Configuration
 The script will ask you to specify a folder to save the datasets. Once selected, it automatically updates the default dataset paths used by P-KNN for future runs.
 
-If you prefer to use your own calibration and regularization datasets, you can manually specify their paths when running P-KNN (see run P_KNN below).
+*If you prefer to use your own calibration and regularization datasets, you can manually specify their paths when running P-KNN (see run P_KNN below).*
 
 *If you prefer running P_KNN.py as a python script and would like to use the default dataset, please download manually and you can modify the default paths in the argument parser:*
 ```Python
-parser.add_argument('--calibration_csv', default=os.path.join(os.path.dirname(__file__), 'calibration_data_dbNSFP52.csv'),
+parser.add_argument('--calibration_csv', default='/put the path to default calibration dataset here/',
                     help='Path to the calibration data CSV file. Default: calibration_data_dbNSFP52.csv')
 
-parser.add_argument('--regularization_csv', default=os.path.join(os.path.dirname(__file__), 'regularization_data_dbNSFP52.csv'),
+parser.add_argument('--regularization_csv', default='/put the path to default regularization dataset here/',
                     help='Path to the regularization data CSV file. Default: regularization_data_dbNSFP52.csv')
 ```
 
