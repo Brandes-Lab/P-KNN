@@ -150,6 +150,7 @@ P_KNN_memory_estimator \
   --vram_gb 16 \
   --mode gpu
 ```
+
 ### Arguments
 - **n_tools**: Number of predictive tools used in the model.
 - **n_query**: Number of variants in the query dataset.
@@ -157,12 +158,14 @@ P_KNN_memory_estimator \
 - **n_regularization**: Number of variants in the regularization dataset.
 - **mode**: Memory estimation mode: cpu or gpu (default: gpu).
 - **n_bootstrap**: Number of bootstrap iterations (default: 100).
+
 ### Argument for GPU mode:
 - **batch_size**: Query batch size for GPU mode (default: 512).
 - **vram_gb**: Available GPU memory in GiB (used to check for OOM risk; optional).
+
 ### Argument for CPU parallel computing mode:
 - **n_cpu_threads**: Number of CPU threads for parallel execution (default: 1).
-- 
+
 ### Optional argument
 - **dtype**: Floating point precision (float32 or float64) (default: float64).
 - **index_dtype**: Index data type (int32 or int64) (default: int64).
