@@ -69,7 +69,7 @@ You will also be prompted to download a optional small test file (~60 KB) for va
 ### Path Configuration
 The script will ask you to specify a folder to save the datasets. Once selected, it automatically updates the default dataset paths used by P-KNN for future runs.
 
-*If you prefer to use your own calibration and regularization datasets, you can manually specify their paths when running P-KNN (see run P_KNN below).*
+*If you prefer to use your own calibration and regularization datasets, you can skip configuration and manually specify their paths when running P-KNN (see Run P_KNN below).*
 
 *If you prefer running P_KNN.py as a python script and would like to use the default dataset, please download manually and you can modify the default paths in the argument parser:*
 ```Python
@@ -80,7 +80,7 @@ parser.add_argument('--regularization_csv', default='/put the path to default re
                     help='Path to the regularization data CSV file. Default: regularization_data_dbNSFP52.csv')
 ```
 
-## run P-KNN
+## Run P-KNN
 You can run the P-KNN joint calibration from the command line using:
 ```
 P_KNN \
@@ -103,35 +103,37 @@ P_KNN \
   --cpu_parallel True \
   --query_chunk_size 512000
 ```
-### Required arguments
-- **query_csv**: Path to your query variant file with raw scores to be calibrated.
-- **output_dir**: Directory where result CSV and log files will be written.
-### Optional files
-- **calibration_csv**: Calibration data file path (The path for default dataset will be set during configuration).
-- **regularization_csv**: Regularization data file path (The path for default dataset will be set during configuration).
+
+### Required Arguments
+--**query_csv**: Path to your query variant CSV file containing raw scores to be calibrated.
+--**output_dir**: Directory where the result CSV and log files will be saved.
+
+### Optional Files
+--**calibration_csv**: Path to the calibration data CSV file. If you used the configuration script, the default path will be set automatically.
+--**regularization_csv**: Path to the regularization data CSV file. The default path will be set during configuration.
+
 ### Optional paremeters
-- **tool_list**: Comma-separated prediction tool names to use for scoring (default: auto
--
-- tools from dbNSFPv5.2a whose training data did not overlap with variants in calibration_data_dbNSFP52.csv).
-- **calibration_label**: Column name in calibration file containing binary pathogenic/benign labels, default is ClinVar_annotation.
-- **p_prior**: Prior probability of pathogenicity (default: 0.0441).
-- **n_calibration_in_window**: Min # of calibration samples per local region (default: 100).
-- **frac_regularization_in_window**: Fraction of regularization data to regularize each region (default: 0.03).
-- **normalization**: Score normalization method (rank or z) (default: rank).
-- **impute**: Use KNN imputation for missing values (True or False) (default: True).
-- **mi_scaling**: Apply mutual information-based scaling (True or False) (default: True).
-- **n_bootstrap**: Number of bootstrap iterations (default: 100).
-- **bootstrap_alpha_error**: Alpha level for credible intervals (e.g. 0.05 for 95% CI) (default: 0.05).
+- **tool_list**: Comma-separated list of prediction tool columns to use for calibration (e.g., SIFT_score,FATHMM_score,VEST4_score). Default: auto (automatically detects *_score columns present in all input files).
+- **calibration_label**: Column name in the calibration CSV containing binary labels (default: ClinVar_annotation).
+- **p_prior**: Prior probability of a variant being pathogenic (default: 0.0441 according to [ClinGen](https://linkinghub.elsevier.com/retrieve/pii/S0002-9297(22)00461-X)).
+- **n_calibration_in_window**: Minimum number of calibration variants per local window (default: 100).
+- **frac_regularization_in_window**: Minimum fraction of regularization samples per window (default: 0.03).
+--**normalization**: Score normalization method ("rank" or "z", default: rank).
+--**impute**: Whether to impute missing values with KNN imputation (default: True).
+--**mi_scaling**: Whether to apply mutual information-based scaling (default: True).
+--**n_bootstrap**: Number of bootstrap iterations for uncertainty estimation (default: 100).
+--**bootstrap_alpha_error**: One-tailed alpha value for credible intervals (e.g. 0.05 for 95% CI, default: 0.05).
+
 ### Execution settings
-- **device**: Run on GPU or CPU (default: GPU).
-- **batch_size**: Batch size for GPU mode (default: 512).
-- **cpu_parallel**: Enable CPU multiprocessing (default: True).
-- **query_chunk_size**: Split query into chunks of this size to reduce memory usage (default: None).
+--**device**: Computation device ("GPU", "CPU", or "auto", default: auto, which auto-detect GPU if available).
+--**batch_size**: Batch size for GPU processing (default: 512).
+--**cpu_parallel**: Whether to run CPU computations in parallel (default: True).
+--**query_chunk_size**: Split query into chunks to reduce memory usage (optional, default: None).
 
 ## Estimate memory requirment
 You can estimate the memory requirment of P-KNN from the command line using:
 ```
-python P_KNN_memory_estimator.py \
+P_KNN_memory_estimator \
   --n_tools 27 \
   --n_query 512000 \
   --n_calibration 11000 \
@@ -160,7 +162,7 @@ python P_KNN_memory_estimator.py \
 - **vram_gb**: Available GPU memory in GiB (used to check for OOM risk; optional).
 ### Argument for CPU parallel computing mode:
 - **n_cpu_threads**: Number of CPU threads for parallel execution (default: 1).
-
+- 
 ### Optional argument
 - **dtype**: Floating point precision (float32 or float64) (default: float64).
 - **index_dtype**: Index data type (int32 or int64) (default: int64).
