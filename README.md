@@ -37,9 +37,15 @@ joblib==1.5.2
 Note: Compatibility with other versions may vary. If you encounter issues, we recommend matching these versions in a virtual environment.
 
 ## Installation
-To install P-KNN, clone the repository and use pip to install dependencies:
+The simplest way to install P-KNN is via pip:
 ```bash
 pip install P-KNN[all]  # Choose 'cpu' or 'gpu' to install the specific version, or 'all' to install both CPU and GPU versions.
+```
+You can also clone the repository and use pip to install dependencies:
+```bash
+git clone https://github.com/Brandes-Lab/P-KNN.git
+cd P-KNN
+pip install .[all]  # Choose 'cpu' or 'gpu' to install the specific version, or 'all' to install both CPU and GPU versions.
 ```
 ### Installation Options
 - **cpu**: Installs the CPU-only version with multiprocessing support.
