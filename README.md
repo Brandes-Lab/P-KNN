@@ -39,9 +39,7 @@ Note: Compatibility with other versions may vary. If you encounter issues, we re
 ## Installation
 To install P-KNN, clone the repository and use pip to install dependencies:
 ```bash
-git clone https://github.com/Brandes-Lab/P-KNN.git
-cd P-KNN
-pip install .[all]  # Choose 'cpu' or 'gpu' to install the specific version, or 'all' to install both CPU and GPU versions.
+pip install P-KNN[all]  # Choose 'cpu' or 'gpu' to install the specific version, or 'all' to install both CPU and GPU versions.
 ```
 ### Installation Options
 - **cpu**: Installs the CPU-only version with multiprocessing support.
