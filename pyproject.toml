@@ -1,3 +1,37 @@
 [build-system]
-requires = ["setuptools>=42", "wheel"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "P_KNN"
+version = "1.0.0"
+description = "P-KNN command line tool"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+  { name="Po-Yu Lin" },
+  { name="Nadav Brandes" }
+]
+dependencies = [
+  "numpy",
+  "pandas",
+  "scikit-learn",
+  "tqdm",
+  "huggingface_hub"
+]
+
+[project.optional-dependencies]
+gpu = ["torch"]
+cpu = ["joblib"]
+all = ["torch", "joblib"]
+
+[project.scripts]
+P_KNN = "P_KNN.P_KNN:main"
+P_KNN_config = "P_KNN.P_KNN_config:main"
+P_KNN_memory_estimator = "P_KNN.P_KNN_memory_estimator:main"
+
+[tool.setuptools.packages.find]
+include = ["P_KNN*"]
+
+[tool.setuptools.package-data]
+"P_KNN" = ["*.py"]
