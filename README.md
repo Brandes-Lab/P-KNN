@@ -47,6 +47,7 @@ pip install .[all]  # Choose 'cpu' or 'gpu' to install the specific version, or 
 - **cpu**: Installs the CPU-only version with multiprocessing support.
 - **gpu**: Installs the GPU-enabled version with CUDA acceleration.
 - **all**: Installs both CPU and GPU versions for full compatibility.
+Tip: If you're installing the GPU or full version, it's recommended to have at least 8GB of RAM available during installation. Otherwise, you can install the CPU version first and install Torch separately afterward.
 Tip: If you're unsure which version to install, use all to ensure full compatibility.
 
 *Alternatively, you can manually install the required packages using pip or conda before installing P-KNN. You may also run the scripts directly by downloading P_KNN.py, P_KNN_CPU.py, P_KNN_GPU.py, and P_KNN_memory_estimator.py in [P_KNN](https://github.com/Brandes-Lab/P-KNN/tree/main/P_KNN) subfolders, configure them manually and executing them as standalone Python scripts.*
@@ -94,14 +95,20 @@ Here’s a conceptual example of the dataset format:
 
 
 ## Run P-KNN
-You can run the P-KNN joint calibration from the command line using:
+You can run P-KNN joint calibration from the command line using the default dataset downloaded during `P_KNN_config` with only the required arguments:
+```bash
+P_KNN \
+  --query_csv path/to/query.csv \
+  --output_dir path/to/output_folder \
 ```
+You can also customize P-KNN using a full set of configurable parameters. For example:
+```bash
 P_KNN \
   --query_csv path/to/query.csv \
   --output_dir path/to/output_folder \
   --calibration_csv path/to/calibration_data.csv \
   --regularization_csv path/to/regularization_data.csv \
-  --tool_list SIFT_score,FATHMM_score,VEST4_score \
+  --tool_list Tool1_score,Tool2_score,Tool3_score,Tool4_score \
   --calibration_label ClinVar_annotation \
   --p_prior 0.0441 \
   --n_calibration_in_window 100 \
@@ -111,7 +118,7 @@ P_KNN \
   --mi_scaling True \
   --n_bootstrap 100 \
   --bootstrap_alpha_error 0.05 \
-  --device GPU \
+  --device auto \
   --batch_size 512 \
   --cpu_parallel True \
   --query_chunk_size 512000
