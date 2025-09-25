@@ -197,3 +197,9 @@ P_KNN_memory_estimator \
 - **sort_overhead**: Overhead multiplier for sorting and top-k operations (default: 2.0).
 - **imputer_overhead**: Overhead multiplier for imputation memory use (default: 1.5).
 - **safety_factor**: Final safety margin multiplier (default: 1.2).
+
+## Related Resources
+- **Precomputed score dataset**: [Hugging Face brandeslab/P-KNN](https://huggingface.co/datasets/brandeslab/P-KNN)
+- **Gene based precomputed score viewer**: [P-KNN-Viewer](https://huggingface.co/spaces/brandeslab/P-KNN-Viewer)
+- **Manuscript**: under review
+- **dbNSFP License**: [dbNSFP Commercial Use Requirements](https://www.dbnsfp.org/license)
