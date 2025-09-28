@@ -201,5 +201,5 @@ P_KNN_memory_estimator \
 ## Related Resources
 - **Precomputed score dataset**: [Hugging Face brandeslab/P-KNN](https://huggingface.co/datasets/brandeslab/P-KNN)
 - **Gene based precomputed score viewer**: [P-KNN-Viewer](https://huggingface.co/spaces/brandeslab/P-KNN-Viewer)
-- **Manuscript**: under review
+- **Manuscript**: [P-KNN: Maximizing variant classification evidence through joint calibration of multiple pathogenicity prediction tools](https://doi.org/10.1101/2025.09.24.678417)
 - **dbNSFP License**: [dbNSFP Commercial Use Requirements](https://www.dbnsfp.org/license)
