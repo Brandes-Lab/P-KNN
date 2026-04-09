@@ -1,3 +1,7 @@
+The P-KNN framework source code is licensed under the MIT License. However, these precomputed scores are derived from dbNSFP. 
+Users are strictly bound by the [dbNSFP licensing terms](https://www.dbnsfp.org/license). For commercial use, you must obtain a commercial license directly from dbNSFP.
+
+
 # P-KNN: Joint Calibration of Pathogenicity Prediction Tools
 **Pathogenicity-K-Nearest-Neighbor (P-KNN)** is a command-line tool for genome-wide, non-parametric calibration of multiple variant pathogenicity prediction scores. It transforms raw scores from various prediction tools into clinically interpretable metrics:
 - Posterior probabilities of a variant being pathogenic or benign.
