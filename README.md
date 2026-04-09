@@ -1,7 +1,3 @@
-The P-KNN framework source code is licensed under the MIT License. However, these precomputed scores are derived from dbNSFP. 
-Users are strictly bound by the [dbNSFP licensing terms](https://www.dbnsfp.org/license). For commercial use, you must obtain a commercial license directly from dbNSFP.
-
-
 # P-KNN: Joint Calibration of Pathogenicity Prediction Tools
 **Pathogenicity-K-Nearest-Neighbor (P-KNN)** is a command-line tool for genome-wide, non-parametric calibration of multiple variant pathogenicity prediction scores. It transforms raw scores from various prediction tools into clinically interpretable metrics:
 - Posterior probabilities of a variant being pathogenic or benign.
@@ -203,7 +199,7 @@ P_KNN_memory_estimator \
 - **safety_factor**: Final safety margin multiplier (default: 1.2).
 
 ## Related Resources
-- **Precomputed score dataset**: [Hugging Face brandeslab/P-KNN](https://huggingface.co/datasets/brandeslab/P-KNN)
+- **Precomputed score dataset**: [Hugging Face brandeslab/P-KNN](https://huggingface.co/datasets/brandeslab/P-KNN) These precomputed scores are derived from dbNSFP. Users are strictly bound by the [dbNSFP licensing terms](https://www.dbnsfp.org/license). For commercial use, you must obtain a commercial license directly from dbNSFP.
 - **Gene based precomputed score viewer**: [P-KNN-Viewer](https://huggingface.co/spaces/brandeslab/P-KNN-Viewer)
 - **Manuscript**: [P-KNN: Maximizing variant classification evidence through joint calibration of multiple pathogenicity prediction tools](https://doi.org/10.1101/2025.09.24.678417)
 - **dbNSFP License**: [dbNSFP Commercial Use Requirements](https://www.dbnsfp.org/license)
