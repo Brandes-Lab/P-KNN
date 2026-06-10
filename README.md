@@ -237,6 +237,49 @@ P_KNN_memory_estimator \
 - **imputer_overhead**: Overhead multiplier for imputation memory use (default: 1.5).
 - **safety_factor**: Final safety margin multiplier (default: 1.2).
 
+## Run P-KNN with Docker
+P-KNN provides two Docker images for containerized deployment:
+- `Dockerfile.cpu`: CPU-only version, supports both x86 and ARM platforms.
+- `Dockerfile.gpu`: GPU-enabled version, requires NVIDIA CUDA 12.4.1.
+
+### Build the Docker image
+```bash
+# CPU version
+docker build -f Dockerfile.cpu -t p_knn_cpu .
+
+# GPU version
+docker build -f Dockerfile.gpu -t p_knn_gpu .
+```
+
+### Run P-KNN in a container
+Use `-v` to mount your local data directory into the container so P-KNN can access your CSV files and write output back to your machine.
+
+```bash
+# CPU version
+docker run \
+  -v /path/to/your/data:/data \
+  p_knn_cpu \
+  P_KNN \
+  --query_csv /data/query.csv \
+  --output_dir /data/output \
+  --calibration_csv /data/calibration_data_dbNSFP52.csv \
+  --regularization_csv /data/regularization_data_dbNSFP52.csv
+
+# GPU version
+docker run --gpus all \
+  -v /path/to/your/data:/data \
+  p_knn_gpu \
+  P_KNN \
+  --query_csv /data/query.csv \
+  --output_dir /data/output \
+  --calibration_csv /data/calibration_data_dbNSFP52.csv \
+  --regularization_csv /data/regularization_data_dbNSFP52.csv
+```
+
+Replace `/path/to/your/data` with the local directory containing your input CSV files. Output results will be written to the `output` subfolder within that directory.
+
+> **Note**: Pre-built Docker images will be made available on Docker Hub in a future release.
+
 ## Related Resources
 - **Precomputed score dataset**: [Hugging Face brandeslab/P-KNN](https://huggingface.co/datasets/brandeslab/P-KNN) These precomputed scores are derived from dbNSFP. Users are strictly bound by the [dbNSFP licensing terms](https://www.dbnsfp.org/license). For commercial use, you must obtain a commercial license directly from dbNSFP.
 - **Gene based precomputed score viewer**: [P-KNN-Viewer](https://huggingface.co/spaces/brandeslab/P-KNN-Viewer)
