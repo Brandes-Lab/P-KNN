@@ -25,11 +25,9 @@ def run_test(test_csv, calibration_csv, regularization_csv, output_dir):
         "--tool_list", TOOL_LIST,
     ]
 
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd)
     if result.returncode != 0:
-        print("P-KNN test run failed with error:")
-        print(result.stdout)
-        print(result.stderr)
+        print("P-KNN test run failed. Please check the error messages above.")
         sys.exit(1)
 
     output_csv = os.path.join(output_dir, "P_KNN_Test.csv")
