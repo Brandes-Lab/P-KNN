@@ -11,7 +11,7 @@ setup(
         "pandas>=1.5",
         "scikit-learn>=1.2",
         "tqdm>=4.60",
-        "huggingface_hub>=0.16"
+        "huggingface_hub>=0.16.2"
     ],
     extras_require={
         "gpu": ["torch>=2.0"],
