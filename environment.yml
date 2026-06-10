@@ -1,0 +1,15 @@
+name: P_KNN
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.9
+  - pip
+  - pip:
+    - numpy>=1.24
+    - pandas>=1.5
+    - scikit-learn>=1.2
+    - tqdm>=4.60
+    - huggingface_hub>=0.16
+    - joblib>=1.2
+    - torch>=2.0

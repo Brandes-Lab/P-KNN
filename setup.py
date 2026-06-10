@@ -2,21 +2,21 @@ from setuptools import setup, find_packages
 
 setup(
     name="P_KNN",
-    version="1.0.0",
+    version="1.0.1",
     description="P-KNN command line tool",
     author="Po-Yu Lin and Nadav Brandes",
     packages=find_packages(),
     install_requires=[
-        "numpy",
-        "pandas",
-        "scikit-learn",
-        "tqdm",
-        "huggingface_hub"
+        "numpy>=1.24",
+        "pandas>=1.5",
+        "scikit-learn>=1.2",
+        "tqdm>=4.60",
+        "huggingface_hub>=0.16"
     ],
     extras_require={
-        "gpu": ["torch"],
-        "cpu": ["joblib"],
-        "all": ["torch", "joblib"]
+        "gpu": ["torch>=2.0"],
+        "cpu": ["joblib>=1.2"],
+        "all": ["torch>=2.0", "joblib>=1.2"]
     },
     entry_points={
         "console_scripts": [
